@@ -165,6 +165,10 @@ class InputValidator:
         
         token = token.strip()
         
+        # Check for valid characters first (alphanumeric, underscore, hyphen)
+        if not re.match(r'^[a-zA-Z0-9_-]+$', token):
+            return False, "API token chứa ký tự không hợp lệ"
+        
         # Check minimum length
         if len(token) < 20:
             return False, "API token quá ngắn"
@@ -172,10 +176,6 @@ class InputValidator:
         # Check maximum length
         if len(token) > 200:
             return False, "API token quá dài"
-        
-        # Check for valid characters (alphanumeric, underscore, hyphen)
-        if not re.match(r'^[a-zA-Z0-9_-]+$', token):
-            return False, "API token chứa ký tự không hợp lệ"
         
         # Check for common Apify token patterns
         if not (token.startswith('apify_api_') or token.startswith('apify_')):
@@ -204,7 +204,7 @@ class InputValidator:
             return False, "Địa điểm quá dài"
         
         # Check for valid characters (letters, numbers, spaces, commas, hyphens, parentheses)
-        if not re.match(r'^[a-zA-Z0-9\s,.-()]+$', location):
+        if not re.match(r'^[a-zA-Z0-9\s,.\-()]+$', location):
             return False, "Địa điểm chứa ký tự không hợp lệ"
         
         return True, ""

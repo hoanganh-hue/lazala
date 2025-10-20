@@ -77,7 +77,10 @@ def sample_search_results(sample_search_result):
 @pytest.fixture
 def auth_manager():
     """Create auth manager for testing"""
-    return AuthManager()
+    manager = AuthManager()
+    yield manager
+    # Cleanup: clear token after test
+    manager.clear_token()
 
 
 @pytest.fixture

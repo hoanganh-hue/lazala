@@ -222,7 +222,9 @@ class TestApifyClient:
         """Create auth manager for testing"""
         auth_manager = AuthManager()
         auth_manager.set_token("apify_api_test_token_123456789")
-        return auth_manager
+        yield auth_manager
+        # Cleanup: clear token after test
+        auth_manager.clear_token()
     
     @pytest.fixture
     def apify_client(self, auth_manager):
