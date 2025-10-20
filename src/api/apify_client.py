@@ -26,10 +26,10 @@ class ApifyClient:
     
     def _get_headers(self) -> Dict[str, str]:
         """Lấy headers cho API request"""
-        token = self.auth_manager.get_token()
-        if not token:
+        if not self.auth_manager.has_token():
             raise ValueError("API token chưa được cấu hình")
         
+        token = self.auth_manager.get_token()
         return {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {token}"
@@ -37,10 +37,10 @@ class ApifyClient:
     
     def _get_url_with_token(self, endpoint: str) -> str:
         """Lấy URL với token parameter"""
-        token = self.auth_manager.get_token()
-        if not token:
+        if not self.auth_manager.has_token():
             raise ValueError("API token chưa được cấu hình")
         
+        token = self.auth_manager.get_token()
         separator = "&" if "?" in endpoint else "?"
         return f"{endpoint}{separator}token={token}"
     

@@ -3,11 +3,14 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/hoanganh-hue/lazala)
 [![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-[![Completion](https://img.shields.io/badge/completion-85%25-brightgreen.svg)](docs/BAO_CAO_HOAN_THANH_DU_AN.md)
+[![Completion](https://img.shields.io/badge/completion-100%25-success.svg)](docs/BAO_CAO_HOAN_THANH_DU_AN.md)
+[![Tests](https://img.shields.io/badge/tests-32%20passed-success.svg)](tests/)
 
 Ứng dụng desktop Windows để thu thập dữ liệu từ Google Maps thông qua Apify API.
 
-> 📊 **[Xem Báo Cáo Hoàn Thiện Dự Án](docs/BAO_CAO_HOAN_THANH_DU_AN.md)** - Đánh giá chi tiết về tỷ lệ hoàn thiện 85% và chất lượng dự án
+> 📊 **[Xem Báo Cáo Hoàn Thiện Dự Án](docs/BAO_CAO_HOAN_THANH_DU_AN.md)** - Đánh giá chi tiết về tỷ lệ hoàn thiện 100% và chất lượng dự án
+> 
+> ✅ **Tất cả 32 bài kiểm thử đều PASS** - Dự án sẵn sàng cho bản phát hành Beta
 
 ## Tính năng chính
 

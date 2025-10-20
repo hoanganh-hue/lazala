@@ -29,6 +29,8 @@ class AuthManager:
     def set_token(self, token: str) -> bool:
         """Set API token và lưu vào config file"""
         if not token or not token.strip():
+            # Clear token if invalid value is provided
+            self._token = None
             return False
             
         self._token = token.strip()
