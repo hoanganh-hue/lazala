@@ -24,11 +24,28 @@
 
 ## Cài đặt
 
-1. Tải file `GoogleMapsScraper.exe` từ releases
-2. Chạy file installer
-3. Đăng ký tài khoản tại [Apify.com](https://apify.com)
-4. Lấy API token từ Apify Console > Settings > Integrations
-5. Cấu hình API token trong ứng dụng
+### 📦 Tải xuống và cài đặt (Khuyến nghị)
+
+1. **Tải file installer**: [GoogleMapsScraper_Setup_v1.0.0.exe](https://github.com/hoanganh-hue/lazala/releases/latest)
+2. **Chạy installer**: Double-click file `.exe` và làm theo hướng dẫn
+3. **Khởi động**: Click icon "Google Maps Scraper" trên Desktop
+4. **Cấu hình API**: 
+   - Đăng ký tài khoản tại [Apify.com](https://apify.com)
+   - Lấy API token từ Apify Console → Settings → Integrations
+   - Cấu hình token trong Settings của ứng dụng
+
+📖 **[Xem hướng dẫn nhanh](QUICK_START.md)** | 🔨 **[Hướng dẫn build từ source](WINDOWS_BUILD_GUIDE.md)**
+
+### 💻 Cài đặt từ source (Dành cho developers)
+
+```bash
+git clone https://github.com/hoanganh-hue/lazala.git
+cd lazala
+python -m venv venv
+venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+python src/main.py
+```
 
 ## Sử dụng
 

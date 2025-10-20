@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 # Get the project root directory
-project_root = Path(__file__).parent
+project_root = Path(SPECPATH)
 src_dir = project_root / "src"
 resources_dir = project_root / "resources"
 
@@ -56,7 +56,7 @@ hiddenimports = [
     "attrs",
     "numpy",
     "pytz",
-    "python_dateutil",
+    "dateutil",
     "six",
     "et_xmlfile",
     "defusedxml",
