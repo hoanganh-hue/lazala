@@ -1,6 +1,13 @@
 # Google Maps Scraper Desktop App
 
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/hoanganh-hue/lazala)
+[![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
+[![Completion](https://img.shields.io/badge/completion-85%25-brightgreen.svg)](docs/BAO_CAO_HOAN_THANH_DU_AN.md)
+
 Ứng dụng desktop Windows để thu thập dữ liệu từ Google Maps thông qua Apify API.
+
+> 📊 **[Xem Báo Cáo Hoàn Thiện Dự Án](docs/BAO_CAO_HOAN_THANH_DU_AN.md)** - Đánh giá chi tiết về tỷ lệ hoàn thiện 85% và chất lượng dự án
 
 ## Tính năng chính
 
@@ -29,12 +36,20 @@
 5. Click "Bắt đầu thu thập"
 6. Xem kết quả và xuất dữ liệu
 
+## Tài liệu
+
+- 📖 [Hướng dẫn sử dụng](docs/huong_dan_su_dung.md) - Hướng dẫn chi tiết cho người dùng
+- 📚 [API Reference](docs/api_reference.md) - Tài liệu kỹ thuật cho developers
+- 🏗️ [Build Guide](BUILD.md) - Hướng dẫn build và deployment
+- 📊 [Báo cáo hoàn thiện](docs/BAO_CAO_HOAN_THANH_DU_AN.md) - Đánh giá dự án (85% hoàn thiện)
+- 📈 [Project Metrics](docs/PROJECT_METRICS.md) - Thống kê và metrics chi tiết
+- 📝 [CHANGELOG](CHANGELOG.md) - Lịch sử phiên bản
+
 ## Hỗ trợ
 
-- Tài liệu: [docs/huong_dan_su_dung.md](docs/huong_dan_su_dung.md)
-- API Reference: [docs/api_reference.md](docs/api_reference.md)
-- Issues: GitHub Issues
+- Issues: [GitHub Issues](https://github.com/hoanganh-hue/lazala/issues)
+- Discussions: [GitHub Discussions](https://github.com/hoanganh-hue/lazala/discussions)
 
 ## License
 
-MIT License
+MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết
