@@ -106,6 +106,13 @@
       "desktop/config.json",
       "!**/*.map"
     ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "hoanganh-hue",
+        "repo": "lazala"
+      }
+    ],
     "win": {
       "target": [
         "nsis"
