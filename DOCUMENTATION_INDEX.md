@@ -40,6 +40,18 @@ Welcome to the Google Maps Scraper documentation! This index will help you find 
 - Release creation
 - Post-release tasks
 
+→ **[RELEASE_GUIDE.md](RELEASE_GUIDE.md)** - Automated release guide
+- GitHub Actions workflow
+- Tag creation
+- Automated build and release
+- Download links
+
+→ **[MANUAL_RELEASE_GUIDE.md](MANUAL_RELEASE_GUIDE.md)** - Manual release guide
+- Step-by-step manual release
+- Upload installer to GitHub
+- Create release page
+- Troubleshooting
+
 ### ...learn how to use the app
 → **[docs/huong_dan_su_dung.md](docs/huong_dan_su_dung.md)** - User manual (Vietnamese)
 - Detailed feature guide
@@ -87,9 +99,12 @@ Welcome to the Google Maps Scraper documentation! This index will help you find 
 
 ### For Release Managers 🚀
 1. **[DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)** - Release checklist
-2. **[release.bat](release.bat)** - Release automation script
-3. **[CHANGELOG.md](CHANGELOG.md)** - Version history
-4. **[.github/workflows/](. github/workflows/)** - CI/CD pipelines
+2. **[RELEASE_GUIDE.md](RELEASE_GUIDE.md)** - Automated release guide
+3. **[MANUAL_RELEASE_GUIDE.md](MANUAL_RELEASE_GUIDE.md)** - Manual release guide
+4. **[create-release.sh](create-release.sh)** / **[create-release.bat](create-release.bat)** - Release scripts
+5. **[release.bat](release.bat)** - Release automation script
+6. **[CHANGELOG.md](CHANGELOG.md)** - Version history
+7. **[.github/workflows/](. github/workflows/)** - CI/CD pipelines
 
 ### For Project Managers 📊
 1. **[BUILD_SOLUTION_SUMMARY.md](BUILD_SOLUTION_SUMMARY.md)** - Project summary
@@ -109,11 +124,15 @@ Welcome to the Google Maps Scraper documentation! This index will help you find 
 | **BUILD_SOLUTION_SUMMARY.md** | Doc | Technical solution overview |
 | **BUILD_PROCESS_DIAGRAM.md** | Doc | Visual build process guide |
 | **DEPLOYMENT_CHECKLIST.md** | Doc | Release deployment checklist |
+| **RELEASE_GUIDE.md** | Doc | Automated release creation guide |
+| **MANUAL_RELEASE_GUIDE.md** | Doc | Manual release creation guide |
 | **BUILD.md** | Doc | Original build documentation |
 | **CHANGELOG.md** | Doc | Version history and release notes |
 | **build.py** | Script | Python build automation script |
 | **build.bat** | Script | Windows batch build script |
 | **release.bat** | Script | Windows release automation script |
+| **create-release.sh** | Script | Unix/Linux release creation script |
+| **create-release.bat** | Script | Windows release creation script |
 | **build.spec** | Config | PyInstaller configuration |
 | **installer.iss** | Config | Inno Setup installer configuration |
 | **requirements.txt** | Config | Python dependencies |
@@ -150,7 +169,9 @@ Welcome to the Google Maps Scraper documentation! This index will help you find 
 | Build executable | `python build.py --skip-installer` |
 | Build installer | `python build.py` |
 | Complete build | `build.bat` |
-| Create release | `release.bat` |
+| Create release (Windows) | `create-release.bat` |
+| Create release (Unix) | `./create-release.sh` |
+| Auto release | `release.bat` |
 
 ### File Locations
 
