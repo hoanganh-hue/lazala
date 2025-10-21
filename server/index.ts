@@ -302,9 +302,11 @@ if (process.env.NODE_ENV !== 'test') {
       // Initialize database
       await initializeDatabase();
 
-      // Serve static client assets (Angular build output)
+    // Serve static client assets (Angular build output) only when enabled
+    if (process.env.SERVE_CLIENT === 'true') {
       // If the client hasn't been built yet, this will just log a warning.
       serveStatic(app);
+    }
 
       // Start server
       const port = parseInt(process.env.PORT || '5000', 10);

@@ -72,8 +72,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Run tests with coverage
-        run: npm test
+      - name: Run tests with coverage (detect open handles)
+        run: npm test -- --detectOpenHandles
         env:
           NODE_ENV: test
           DB_TYPE: postgres
