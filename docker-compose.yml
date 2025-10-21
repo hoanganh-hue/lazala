@@ -93,9 +93,11 @@ services:
     environment:
       # Provide via .env or platform secrets
       NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
-    # Use fixed domain and region via env; default region is 'us'
+    # Use fixed domain, region and optional basic-auth via env; default region is 'us'
     command: >-
-      http --url=${NGROK_FIXED_DOMAIN} --region=${NGROK_REGION:-us} server:5000
+      http --url=${NGROK_FIXED_DOMAIN} --region=${NGROK_REGION:-us}
+      ${NGROK_BASIC_AUTH:+--basic-auth=${NGROK_BASIC_AUTH}}
+      server:5000
     ports:
       - "4040:4040"  # Ngrok web interface
     restart: unless-stopped

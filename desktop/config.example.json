@@ -1,5 +1,5 @@
 {
   "serverUrl": "https://your-subdomain.ngrok-free.dev",
-  "timeoutMs": 15000
+  "timeoutMs": 15000,
+  "basicAuth": ""  
 }
-

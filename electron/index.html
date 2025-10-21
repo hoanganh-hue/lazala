@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>DogeRat Admin (Desktop)</title>
+    <style>
+      html, body { height: 100%; margin: 0; font-family: Arial, sans-serif; background: #0b0f14; color: #e6edf3; }
+      .container { display: flex; flex-direction: column; height: 100%; }
+      header { padding: 12px 16px; background: #111827; border-bottom: 1px solid #1f2937; }
+      header h1 { font-size: 18px; margin: 0; }
+      main { flex: 1; padding: 16px; }
+      .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; max-width: 720px; }
+      .row { display: flex; gap: 24px; }
+      .muted { color: #9ca3af; }
+      code { background: #111827; padding: 2px 6px; border-radius: 4px; }
+      button { background: #2563eb; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+      button:hover { background: #1d4ed8; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>DogeRat Admin — Desktop Shell</h1>
+      </header>
+      <main>
+        <div class="card" style="margin-bottom:16px">
+          <p><strong>Server URL:</strong> <span id="serverUrl">loading…</span></p>
+          <div class="row">
+            <div>
+              <button id="checkHealth">Check API Health</button>
+            </div>
+            <div class="muted">Uses <code>GET /api/health</code></div>
+          </div>
+          <pre id="healthResult" style="margin-top: 12px; white-space: pre-wrap"></pre>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3 style="margin-top:0">Authentication</h3>
+          <div class="row">
+            <div style="flex:1">
+              <label>Username</label>
+              <input id="username" style="width:100%;padding:8px;border-radius:6px;border:1px solid #1f2937;background:#111827;color:#e6edf3" />
+            </div>
+            <div style="flex:1">
+              <label>Password</label>
+              <input id="password" type="password" style="width:100%;padding:8px;border-radius:6px;border:1px solid #1f2937;background:#111827;color:#e6edf3" />
+            </div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <button id="loginBtn">Login</button>
+              <button id="logoutBtn" style="margin-left:8px;background:#6b7280">Logout</button>
+            </div>
+            <div class="muted">Token is stored in <code>localStorage</code></div>
+          </div>
+          <pre id="authResult" style="margin-top: 12px; white-space: pre-wrap"></pre>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">Role Guard Demo</h3>
+          <p class="muted">Shows user info from <code>GET /api/auth/me</code> and allows Admin-only action.</p>
+          <div id="userInfo" class="muted">Not authenticated.</div>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <button id="adminAction">Admin: List Users</button>
+            </div>
+            <div class="muted">Calls <code>GET /api/users</code> with JWT</div>
+          </div>
+          <pre id="adminResult" style="margin-top: 12px; white-space: pre-wrap"></pre>
+        </div>
+      </main>
+    </div>
+    <script>
+      (async () => {
+        const serverUrl = (await window.electronAPI.getServerUrl()).replace(/\/$/, '');
+        const basicAuth = await window.electronAPI.getBasicAuth();
+        const $ = (id) => document.getElementById(id);
+        const set = (id, text) => { $(id).textContent = text };
+        const getToken = () => localStorage.getItem('jwtToken') || '';
+        const setToken = (t) => localStorage.setItem('jwtToken', t);
+        const clearToken = () => localStorage.removeItem('jwtToken');
+
+        $('serverUrl').textContent = serverUrl;
+
+        function buildHeaders(authType='none') {
+          const h = { 'Content-Type': 'application/json' };
+          if (authType === 'bearer') {
+            const t = getToken(); if (t) h['Authorization'] = `Bearer ${t}`;
+          }
+          // Note: If ngrok basic-auth is enabled, it's enforced by the endpoint.
+          // Avoid sending Basic and Bearer in the same Authorization header to prevent conflicts.
+          return h;
+        }
+
+        async function fetchJson(path, opts={}) {
+          const res = await fetch(serverUrl + path, opts);
+          const text = await res.text();
+          try { return { status: res.status, body: JSON.parse(text) } } catch { return { status: res.status, body: text } }
+        }
+
+        // Health check
+        $('checkHealth').addEventListener('click', async () => {
+          set('healthResult','Checking…');
+          const r = await fetchJson('/api/health');
+          set('healthResult', JSON.stringify(r, null, 2));
+        });
+
+        // Login
+        $('loginBtn').addEventListener('click', async () => {
+          set('authResult','Logging in…');
+          const username = $('username').value.trim();
+          const password = $('password').value;
+          const r = await fetchJson('/api/auth/login', {
+            method: 'POST',
+            headers: buildHeaders('none'),
+            body: JSON.stringify({ username, password })
+          });
+          if (r.status === 200 && r.body && r.body.token) {
+            setToken(r.body.token);
+            set('authResult', 'Login successful. Token saved.');
+            await refreshUserInfo();
+          } else {
+            set('authResult', `Login failed: ${JSON.stringify(r, null, 2)}`);
+          }
+        });
+
+        $('logoutBtn').addEventListener('click', () => {
+          clearToken();
+          set('authResult','Logged out.');
+          set('userInfo','Not authenticated.');
+          set('adminResult','');
+        });
+
+        async function refreshUserInfo() {
+          const r = await fetchJson('/api/auth/me', { headers: buildHeaders('bearer') });
+          if (r.status === 200) {
+            const u = r.body;
+            set('userInfo', `User: ${u.username} | Role: ${u.role}`);
+          } else {
+            set('userInfo', `Failed to fetch user: ${JSON.stringify(r, null, 2)}`);
+          }
+        }
+
+        // Admin-only action
+        $('adminAction').addEventListener('click', async () => {
+          set('adminResult','Running…');
+          const r = await fetchJson('/api/users', { headers: buildHeaders('bearer') });
+          set('adminResult', JSON.stringify(r, null, 2));
+        });
+
+        // If token existed, refresh user
+        if (getToken()) {
+          await refreshUserInfo();
+        }
+      })();
+    </script>
+  </body>
+  </html>
