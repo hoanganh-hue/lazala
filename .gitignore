@@ -52,3 +52,4 @@ installer/
 htmlcov/
 .pytest_cache/
 .tox/
+node_modules

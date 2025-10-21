@@ -1,82 +1,44 @@
-name: Build Windows Installer
+name: Build & Publish Windows Desktop (Electron)
 
 on:
   push:
-    tags:
-      - 'v*'  # Trigger on version tags like v1.0.0
-  workflow_dispatch:  # Allow manual trigger
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  build-windows:
-    name: Build Windows Executable and Installer
+  build-win:
+    name: Build Windows Installer
     runs-on: windows-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        cache: 'pip'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    
-    - name: Run tests
-      env:
-        PYTHONIOENCODING: "utf-8"
-      run: |
-        python run_tests.py --type unit
-      continue-on-error: false
-    
-    - name: Build executable with PyInstaller
-      env:
-        PYTHONIOENCODING: "utf-8"
-      run: |
-        python build.py --skip-installer --skip-tests
-    
-    - name: Install Inno Setup
-      run: |
-        choco install innosetup -y
-    
-    - name: Create installer with Inno Setup
-      run: |
-        iscc installer.iss
-      shell: cmd
-    
-    - name: Get version from tag
-      id: get_version
-      run: |
-        $version = $env:GITHUB_REF -replace 'refs/tags/v', ''
-        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
-      shell: pwsh
-    
-    - name: Upload executable artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: GoogleMapsScraper-exe
-        path: dist/GoogleMapsScraper.exe
-        retention-days: 30
-    
-    - name: Upload installer artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: GoogleMapsScraper-installer
-        path: installer/GoogleMapsScraper_Setup_v*.exe
-        retention-days: 30
-    
-    - name: Create Release
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          installer/GoogleMapsScraper_Setup_v*.exe
-        draft: false
-        prerelease: false
-        generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-fund --no-audit
+
+      - name: Prepare publishing and signing env
+        shell: pwsh
+        run: |
+          $token = "${{ secrets.GH_TOKEN }}"
+          if (-not $token -or $token -eq '') { $token = "${{ secrets.GITHUB_TOKEN }}" }
+          "GH_TOKEN=$token" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+
+          if (-not [string]::IsNullOrEmpty("${{ secrets.CSC_LINK }}")) {
+            "CSC_LINK=${{ secrets.CSC_LINK }}" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+          }
+          if (-not [string]::IsNullOrEmpty("${{ secrets.CSC_KEY_PASSWORD }}")) {
+            "CSC_KEY_PASSWORD=${{ secrets.CSC_KEY_PASSWORD }}" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+          }
+
+      - name: Build Windows installer and publish release
+        run: npx electron-builder --win --x64 --publish always
+
