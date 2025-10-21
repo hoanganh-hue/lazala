@@ -32,12 +32,16 @@ jobs:
         pip install pytest-cov flake8
     
     - name: Run linter
+      env:
+        PYTHONIOENCODING: "utf-8"
       run: |
         flake8 src tests --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 src tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       continue-on-error: true
     
     - name: Run tests with coverage
+      env:
+        PYTHONIOENCODING: "utf-8"
       run: |
         python run_tests.py --type unit --verbose
     
@@ -67,6 +71,8 @@ jobs:
         pip install -r requirements.txt
     
     - name: Test build executable (without Inno Setup)
+      env:
+        PYTHONIOENCODING: "utf-8"
       run: |
         python build.py --skip-installer --skip-tests
     
