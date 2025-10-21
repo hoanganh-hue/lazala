@@ -86,7 +86,6 @@ a = Analysis(
         "tkinter",
         "matplotlib",
         "scipy",
-        "PIL",
         "cv2",
         "sklearn",
         "tensorflow",
