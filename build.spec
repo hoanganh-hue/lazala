@@ -45,7 +45,6 @@ hiddenimports = [
     "queue",
     "urllib3",
     "certifi",
-    "charset_normalizer",
     "idna",
     "multidict",
     "yarl",
